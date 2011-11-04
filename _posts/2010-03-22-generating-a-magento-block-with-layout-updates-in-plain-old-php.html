@@ -1,0 +1,131 @@
+--- 
+layout: post
+title: Generating a Magento Block with Layout Updates in Plain Old PHP
+tags: 
+- magento
+- php
+status: publish
+type: post
+published: true
+meta: 
+  blogger_blog: enrutech.blogspot.com
+  blogger_author: n
+  blogger_2a695e53ec49ff1c5e3d2d650e76a7cd_permalink: "2118790507843474313"
+---
+<a href="#update-20100322" />updated 22 Mar 2010</a>
+
+<p>I recently had the requirement to output a Magento Block outside of the core Magento system. While I'm aware that you can easily create a Magento block by creating an instance of the Block, setting its template and calling its renderView() method, it was a bit more complicated to get a way to include all of the layout updates that would happen to that block in the normal flow of Magento's layout &amp; template handling.</p>
+
+<p>My initial attempt was something like this code block below. It creates an instance of the Mage_Page_Html_Header class, sets its template and renders it. However, neither the newsletter signup, the quick access links nor the mini-search form were being rendered because the layout updates are not included using this approach.</p>
+
+<pre>
+
+getBlockClassname('page/html_header');
+$block = new $className();
+$block-&gt;setTemplate('page/html/header.phtml');
+echo $block-&gt;renderView();
+
+</pre>
+
+<p>After a few hours digging around, several failed attempts and scratches of the head, I came up with this approach which seems to work.
+</p>
+
+<pre>
+
+setTheme('yourthemenamehere');
+
+// scavenged from Mage_Core_Controller_Varien_Action and others
+
+$layout = Mage::getSingleton('core/layout');
+
+$layout-&gt;getUpdate()-&gt;addHandle('default');
+
+// remove all the blocks you don't want
+$layout-&gt;getUpdate()-&gt;addUpdate('');
+$layout-&gt;getUpdate()-&gt;addUpdate('');
+$layout-&gt;getUpdate()-&gt;addUpdate('');
+$layout-&gt;getUpdate()-&gt;addUpdate('');
+$layout-&gt;getUpdate()-&gt;addUpdate('');
+$layout-&gt;getUpdate()-&gt;addUpdate('');
+$layout-&gt;getUpdate()-&gt;addUpdate('');
+$layout-&gt;getUpdate()-&gt;addUpdate('');
+$layout-&gt;getUpdate()-&gt;addUpdate('');
+$layout-&gt;getUpdate()-&gt;addUpdate('');
+$layout-&gt;getUpdate()-&gt;addUpdate('');
+
+// load layout updates by specified handles
+$layout-&gt;getUpdate()-&gt;load();
+
+// generate xml from collected text updates
+$layout-&gt;generateXml();
+
+// generate blocks from xml layout
+$layout-&gt;generateBlocks();
+
+echo $layout-&gt;getOutput();
+
+</pre>
+
+<h3><a name='update-20100322'>Update: </a></h3> 
+<p>I created a no-html template that can be utilised to output this code without ,  &amp;  tags. All you need to do is add this line before echoing out the layout's output:</p>
+
+<pre>
+// use alt. template with no HTML head or body
+$root = $layout-&gt;getBlock('root')-&gt;setTemplate('page/nohtml.phtml');
+</pre>
+
+<p>...and here's an example nohtml.phtml template:</p>
+
+
+<pre>
+
+<div class="wrapper">
+  getChildHtml('global_notices') ?&gt;
+    <!-- start header -->
+    <div class="header">
+            getChildHtml('header') ?&gt;
+      </div>
+      <!-- end header -->
+
+      <!-- start middle -->
+      <div class="middle-container">
+        <div class="middle col-3-layout">
+        getChildHtml('breadcrumbs') ?&gt;
+          <!-- start left -->
+          <div class="col-left side-col">
+            getChildHtml('left') ?&gt;
+          </div>
+          <!-- end left -->
+
+          <!-- start center -->
+          <div id="main" class="col-main">
+            <!-- start global messages -->
+              getChildHtml('global_messages') ?&gt;
+            <!-- end global messages -->
+
+            <!-- start content -->
+              getChildHtml('content') ?&gt;
+                <!-- end content -->
+          </div>
+          <!-- end center -->
+
+          <!-- start right -->
+          <div class="col-right side-col">
+            getChildHtml('right') ?&gt;
+          </div>
+          <!-- end right -->
+
+        </div>
+      </div>
+    <!-- end middle -->
+
+    <!-- start footer -->
+    <div class="footer-container">
+      <div class="footer">
+        getChildHtml('footer') ?&gt;
+      </div>
+    </div>
+    <!-- end footer -->
+getChildHtml('before_body_end') ?&gt;
+</div>
+</pre><div class="blogger-post-footer"><img width='1' height='1' src='' alt='' /></div>

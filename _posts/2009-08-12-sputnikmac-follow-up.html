@@ -1,0 +1,40 @@
+--- 
+layout: post
+title: Sputnik/Mac Follow-Up
+tags: 
+- cgi-bin
+- kepler
+- lua
+- luarocks
+- mac
+- macosx
+- sputnik
+status: publish
+type: post
+published: true
+meta: 
+  blogger_blog: enrutech.blogspot.com
+  blogger_author: n
+  blogger_2a695e53ec49ff1c5e3d2d650e76a7cd_permalink: "4430584180083338356"
+---
+<p>Here's a follow up to <a href='/2009/08/sputnik-on-mac.html'>Sputnik on a Mac</a></p>
+
+<p>How to run under <em>cgi-bin</em> so you can visit your new Sputnik install here: <br /><a href='http://localhost/cgi-bin/sputnik.cgi'>http://localhost/cgi-bin/sputnik.cgi</a>:</p>
+
+<pre>
+cd ~/sputnik
+cp ./lib/luarocks/bin/wsapi.cgi  ./bin/
+cp sputnik.cgi /Library/WebServer/CGI-Executables/
+chmod a+x /Library/WebServer/CGI-Executables/sputnik.cgi
+</pre>
+
+<p>...and here's how to add the Tickets App:</p>
+
+<pre>
+cd ~/sputnik
+./bin/luarocks \
+  --only-from=http://sputnik.freewisdom.org/rocks/earth \
+  install sputnik-tickets
+</pre>
+
+<p>You can visit your new Tickets App here: <br /><a href='http://localhost/cgi-bin/sputnik.cgi?p=Tickets'>http://localhost/cgi-bin/sputnik.cgi?p=Tickets</a></p><div class="blogger-post-footer"><img width='1' height='1' src='https://blogger.googleusercontent.com/tracker/5008773-4430584180083338356?l=enrutech.blogspot.com' alt='' /></div>

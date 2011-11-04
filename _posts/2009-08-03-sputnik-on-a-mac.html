@@ -1,0 +1,48 @@
+--- 
+layout: post
+title: Sputnik on a Mac
+tags: 
+- kepler
+- lua
+- luarocks
+- mac
+- macosx
+- sputnik
+status: publish
+type: post
+published: true
+meta: 
+  blogger_blog: enrutech.blogspot.com
+  blogger_author: n
+  blogger_2a695e53ec49ff1c5e3d2d650e76a7cd_permalink: "4850963597594369923"
+---
+<p>As a diversion from PHP, I've been taking a look at <a href="http://www.lua.org/">lua</a> and like the look of <a href="http://spu.tnik.org/">sputnik</a> as wiki/cms/ticket engine, as well as <a href="http://www.keplerroject.org/">kepler</a> as a web framework. Lua's package management via <a href="http://www.luarocks.org/">Luarocks</a> is good and Lua's small footprint is also amazing.</p>
+
+<p>I've also been using Linux a lot as a Desktop Environment at work but still use my MacBook around the house, in the living room watching TV etc. Sputnik's install instructions seemed pretty clear but they are for pure Unix NOT Mac's BSD flavour. Here's how I got it running in its own self contained directory. It goes a little something like this:</p>
+
+<pre>
+mkdir ~/sputnik
+cd ~/sputnik
+wget http://www.lua.org/ftp/lua-5.1.x.tar.gz
+tar -xzf lua-5.1.x.tar.gz
+cd lua-5.1.x
+make  macosx
+make install INSTALL_TOP=~/sputnik
+cd ~/sputnik
+wget http://luaforge.net/frs/download.php/3981/luarocks-1.0.x.tar.gz
+cd luarocks-1.0.x
+./configure --prefix=~/sputnik --with-lua=~/sputnik
+make
+make install
+cd ~/sputnik
+./bin/luarocks install kepler-xavante \
+ KEPLER_WEB=~/sputnik/kepler/htdocs/
+./bin/luarocks \
+ -only-from=http://sputnik.freewisdom.org/rocks/earth \
+ install sputnik 8.08.13
+export LUA_PATH=~/sputnik/share/lua/5.1/?.lua 
+./bin/lua -lluarocks.require \
+ -e 'require("sputnik").setup()'
+mkdir wiki-data &amp;&amp; chmod -R a+rw wiki-data
+./lib/luarocks/bin/xavante_start 
+</pre><div class="blogger-post-footer"><img width='1' height='1' src='' alt='' /></div>

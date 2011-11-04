@@ -1,0 +1,30 @@
+--- 
+layout: post
+title: CKEditor File Upload & replaceAll()
+tags: 
+- ckeditor
+- javascript
+- upload
+status: publish
+type: post
+published: true
+meta: 
+  blogger_blog: enrutech.blogspot.com
+  blogger_author: n
+  blogger_2a695e53ec49ff1c5e3d2d650e76a7cd_permalink: "51605260568529589"
+---
+<p>I just spent a few moments scratching my head trying to work out how to add file upload to CKEditor when using replaceAll(). </p>
+
+<p>Here's how-to:</p>
+
+<pre>
+        CKEDITOR.replaceAll(function(textarea, config) {
+                    config.filebrowserBrowseUrl = '/browser/browse.php';
+                    config.filebrowserUploadUrl = '/uploader/upload.php';
+                    return true;
+        });
+</pre>
+
+<p>
+For more info see: <br />
+<a href="http://docs.cksource.com/CKEditor_3.x/Developers_Guide/File_Browser_(Uploader)">http://docs.cksource.com/CKEditor_3.x/Developers_Guide/File_Browser_(Uploader)</a></p><div class="blogger-post-footer"><img width='1' height='1' src='https://blogger.googleusercontent.com/tracker/5008773-51605260568529589?l=enrutech.blogspot.com' alt='' /></div>

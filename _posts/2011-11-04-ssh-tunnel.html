@@ -1,0 +1,16 @@
+--- 
+layout: post
+title: "tunneling with SSH"
+tags: []
+
+status: published
+type: post
+published: true
+---
+<p>
+I always forget the format for setting up an SSH tunnel so here's a me-reminder:
+</p>
+<pre>
+ssh -f user@remote -L 2222:target:22 -N
+ssh user2@target -p 2222
+</pre>

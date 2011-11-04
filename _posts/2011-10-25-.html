@@ -1,0 +1,33 @@
+--- 
+layout: post
+title: ""
+tags: []
+
+status: draft
+type: post
+published: false
+meta: 
+  _oembed_288510bd222315605dee3bdc231b7fcb: "{{unknown}}"
+  _edit_last: "14182377"
+---
+http://laffers.net/howtos/howto-redirect-blogger-to-wordpress/
+<pre>
+<b>
+<b>
+<b>
+<b>
+
+var permalink = &#039;&#039;;
+var new_page = permalink.replace(/blogspot/,'wordpress');
+//new_page = new_page.replace(/\.html$/,&#039;/&#039;);
+new_page = new_page.replace(/(http:\/\/enrutech.wordpress.com)\/([0-9]{4})\/([0-9]{2})\/(.*)\.html/, &#039;$1/$2/$3/&#039;); 
+var title = &#039;&#039;;
+title = title.replace(/ /g, '-').toLowerCase();
+document.location.href = new_page;
+
+</b>
+</b>
+</b>
+</b>
+
+</pre>

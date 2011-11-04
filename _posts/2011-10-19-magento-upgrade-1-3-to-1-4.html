@@ -1,0 +1,37 @@
+--- 
+layout: post
+title: Magento upgrade 1.3 to 1.4
+tags: 
+- magento
+status: publish
+type: post
+published: true
+meta: 
+  _edit_last: "14182377"
+  jabber_published: "1319037466"
+---
+Yeah, I know Magento 1.4 came out ages ago but <a title="inigo media ltd" href="http://inigo.net">Inigo</a> recently had a client ask for an upgrade of their <a href="http://www.magentocommerce.com" title="magento commerce">Magento</a> 1.3 site.
+
+After upgrading with:
+<pre>./pear install magento-core/Mage_All_Latest
+./pear upgrade-all</pre>
+
+<p></p>
+...here's the mods I had to do to get it running (there are still some theme tweaks to do):
+
+<ul>
+	<li>Remove the addWishlistLink() method
+<pre>app/design/frontend/default/whywoodworks/layout/wishlist.xml</pre>
+- &lt;action method="addWishlistLink"&gt;&lt;/action&gt;
++ &lt;!--action method="addWishlistLink"&gt;&lt;/action--&gt;</li>
+	<li>Add a name to the core/profiler block
+<pre>app/design/frontend/default/whywoodworks/layout/page.xml</pre>
+- &lt;block type="core/profiler" output="toHtml"/&gt;
++ &lt;block type="core/profiler" output="toHtml" name="core_profiler"/&gt;</li>
+	<li>removed app/code/core/Zend/Cache/</li>
+</ul>
+See also:
+<ol>
+	<li><a href="http://www.sonassi.com/knowledge-base/magento-1-4-install-errors/">http://www.sonassi.com/knowledge-base/magento-1-4-install-errors/</a></li>
+	<li><a href="http://www.blog.magepsycho.com/how-to-run-magento-1-3-x-on-php-5-3/">http://www.blog.magepsycho.com/how-to-run-magento-1-3-x-on-php-5-3/</a></li>
+</ol>

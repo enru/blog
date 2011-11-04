@@ -1,0 +1,56 @@
+--- 
+layout: post
+title: Magento 1.3 OPC bug - City field (should be) required.
+tags: 
+- magento
+- one page checkout
+- opc
+status: publish
+type: post
+published: true
+meta: 
+  blogger_blog: enrutech.blogspot.com
+  blogger_author: n
+  blogger_2a695e53ec49ff1c5e3d2d650e76a7cd_permalink: "4525398512887243493"
+---
+<p>I thought I'd fixed a bug in Magento yesterday to find that it's been fixed in 1.4 :) This might be of interest to people if you're still running Magento 1.3, though.</p>
+
+<p>The issue is in One Page Checkout (OPC). The Billing &amp; Shipping address City field is a required field but the required asterisk <span style="color:#f00;">*</span> is being hidden on page load by the RegionUpdater JavaScript.</p>
+
+<p>The file is /js/varien/form.js and the  fix is below.</p>
+
+<pre>
+RegionUpdater = Class.create();
+RegionUpdater.prototype = {
+...
+ setMarkDisplay: function(elem, display){
+ elem = $(elem);
+ var labelElement = elem.up(1).down('label &gt; span.required') || 
+ elem.up(2).down('label &gt; span.required') ||
+ elem.up(1).down('label.required &gt; em') ||
+ elem.up(2).down('label.required &gt; em');
+ if(labelElement) {
+ display ? labelElement.show() : labelElement.hide();
+ }
+...
+}
+</pre>
+
+<p>...should be:</p>
+
+<pre>
+RegionUpdater = Class.create();
+RegionUpdater.prototype = {
+...
+ setMarkDisplay: function(elem, display){
+ elem = $(elem);
+ var labelElement = elem.up(0).down('label &gt; span.required') || 
+ elem.up(1).down('label &gt; span.required') ||
+ elem.up(0).down('label.required &gt; em') ||
+ elem.up(1).down('label.required &gt; em');
+ if(labelElement) {
+ display ? labelElement.show() : labelElement.hide();
+ }
+...
+}
+</pre><div class="blogger-post-footer"><img width='1' height='1' src='' alt='' /></div>

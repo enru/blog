@@ -1,0 +1,35 @@
+--- 
+layout: post
+title: "adventures in git part one :: updating a local branch"
+tags: []
+
+status: publish
+type: post
+published: true
+meta: 
+  blogger_blog: enrutech.blogspot.com
+  blogger_author: n
+  blogger_2a695e53ec49ff1c5e3d2d650e76a7cd_permalink: "1367293581509422976"
+---
+<p>I'm starting to use git after 2 years of SVN usage.</p>
+
+<p>As I understand a common workflow is, as derived from the <a href="http://www.kernel.org/pub/software/scm/git/docs/everyday.html">git tutorial</a>:
+
+<pre>
+git clone 
+git checkout -b myworkingbranch # create a new branch to add a feature or fix bug
+# do some work add / edit files
+git add files
+git commit -m 'a commit message'
+git checkout master
+git merge myworkingbranch 
+</pre>
+
+... but what if you've already updated your master branch from the remote origin? or the remote origin has been updated? The answer is to update your branch by merging with the master or remote. e.g.
+
+<pre>
+git checkout master
+git pull # git updates local files
+git checkout myworkingbranch # branch is out of date
+git merge master # git updates your branch
+</pre><div class="blogger-post-footer"><img width='1' height='1' src='' alt='' /></div>

@@ -1,0 +1,21 @@
+--- 
+layout: post
+title: MAC OS line endings vs. Table Rate Shipping on Magento
+tags: 
+- code
+- mac
+- magento
+- shipping
+status: publish
+type: post
+published: true
+meta: 
+  blogger_blog: enrutech.blogspot.com
+  blogger_author: n
+  blogger_2a695e53ec49ff1c5e3d2d650e76a7cd_permalink: "8292302649191427967"
+---
+I've just found out that if your (un)trusty text editor or (un)helpful spreadsheet program that handles CSV files use MAC line endings (\r) by default , you'll have trouble setting the table rates in Magento.
+
+The code splits the content of the CSV file on UNIX line endings (\n) so without them your CSV file will never be read.
+
+So if you have a MAC and the export of your Table Rate shipping is always blank then now you know why.<div class="blogger-post-footer"><img width='1' height='1' src='' alt='' /></div>

@@ -1,0 +1,60 @@
+--- 
+layout: post
+title: cpbackup userskip backup db script
+tags: 
+- backup
+- cpanel
+- mysql
+status: publish
+type: post
+published: true
+meta: 
+  blogger_blog: enrutech.blogspot.com
+  blogger_author: n
+  blogger_2a695e53ec49ff1c5e3d2d650e76a7cd_permalink: "814660080802924024"
+---
+<p>I recently had to exclude a number of users from the standard cpanel backup process - some have huge directories &amp; files resulting in large gzip'd backups.</p>
+
+<p>But, hey, we have their sites in our SVN repo - so all we really care about is their databases.</p>
+
+<p>Hence this nifty little script that's now running on cron to back up their DBs on a daily basis:</p>
+
+<pre>
+#!/bin/bash
+
+db_user='root'
+db_pass='PASSWORD'
+backup_dir='/PATH/TO/BACKUP/DIR'
+
+databases=`/usr/bin/mysql -u ${db_user} \
+--skip-column-names --batch \
+--password=${db_pass} -e "show databases";`
+
+users=`cat /etc/cpbackup-userskip.conf`
+
+backups=
+
+for u in $users; do
+ for d in  $databases; do
+  backup_reqd=`echo $d | awk -v user=${u} \
+    'BEGIN { user_regexp = "^"user } $0 ~ user_regexp { print; }'`
+  if [ "${backup_reqd}x" != "x" ] ; then 
+   backups[${#backups[*]}]=$backup_reqd; fi
+  done
+done
+
+for db in ${backups[*]}; do
+  echo "Backing up DB: ${db}...";
+  if [ -f ${backup_dir}/${db}.sql.gz ]; then
+    mv ${backup_dir}/${db}.sql.gz \
+       ${backup_dir}/${db}.sql.yesterday.gz
+  fi
+  /usr/bin/mysqldump \
+    -u ${db_user} \ 
+    --password=${db_pass} \
+    ${db} &gt; ${backup_dir}/${db}.sql
+  /bin/gzip ${backup_dir}/${db}.sql
+  echo "done.";
+done
+
+</pre><div class="blogger-post-footer"><img width='1' height='1' src='' alt='' /></div>

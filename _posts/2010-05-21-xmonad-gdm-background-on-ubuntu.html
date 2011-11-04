@@ -1,0 +1,29 @@
+--- 
+layout: post
+title: xmonad & gdm background on ubuntu
+tags: 
+- background
+- gmd
+- ubuntu
+- xmonad
+status: publish
+type: post
+published: true
+meta: 
+  blogger_blog: enrutech.blogspot.com
+  blogger_author: n
+  blogger_2a695e53ec49ff1c5e3d2d650e76a7cd_permalink: "2419030280148331837"
+---
+<p>I'm enjoying using <a href="http://xmonad.org/">xmonad</a> as a window manager on my linux box.</p>
+
+<p>...but was bored of the default ubuntu background.</p>
+
+<p>It can be changed by resetting the GDM background picture with GNOME's gconftool, like so:</p>
+
+<pre>
+sudo -u gdm gconftool-2 --set --type string \
+--set /desktop/gnome/background/picture_filename \
+/usr/share/backgrounds/cosmos/cloud.jpg 
+</pre>
+
+<p>...which gives you a trippy cosmos cloud to stare at.</p><div class="blogger-post-footer"><img width='1' height='1' src='' alt='' /></div>

@@ -1,0 +1,100 @@
+--- 
+layout: post
+title: magento catalogindex_price table empty
+tags: 
+- cache
+- magento
+- magento catalogindex_price
+- price
+- reindex
+status: publish
+type: post
+published: true
+meta: 
+  blogger_blog: enrutech.blogspot.com
+  blogger_author: n
+  blogger_2a695e53ec49ff1c5e3d2d650e76a7cd_permalink: "709123759936671317"
+---
+<p>
+On deploying Magento sites, we always seem to run into an issue with Magento's sort by price option on product listings. Previously, in test with a few products this could be solved by going into the Admin Panel at System-&gt;Cache Management and hitting "Refresh now" next to <em>Layered Navigation Indices</em>. Now in production with many more products this refresh option times out and gives a White Screen of Death.
+</p> 
+
+<p>
+This <a href='http://chrismckee.co.uk/magento-commerce-layered-navigation-cache-error/'>post</a> pointed me to how to fix the issue. ... but being too lazy to download someone's code, I've found a way to fix it without any external scripts. It involves using Magento's cron feature to run the catalog reindexer by temporally editing a config file and manipulating the DB.
+</p>
+
+<p>
+After trying to refresh the Layered Navigation Indice and the page hangs, a flag gets set in the core_flag DB table. We need to clear this otherwise the reindexing will never happen again. To reset it do as <a href='http://chrismckee.co.uk/magento-commerce-layered-navigation-cache-error/'>Chris</a> says and empty the table using:
+</p> 
+
+<pre>
+TRUNCATE core_flag;
+</pre>
+
+<p>Now that's clear we're going to force the reindexing to run from the CLI by editing a config file and running Magento's cron.php</p>
+
+<p>The cron feature of Magento normally handles the reindexing of catalogindex_price. 
+The config for it lives in app/code/core/Mage/CatalogIndex/etc/config.xml. 
+Here's the section we'll be paying attention to:</p>
+
+<pre>
+    
+        
+            
+                0 2 * * *
+                catalogindex/observer::reindexAll
+            
+            
+                * * * * *
+                catalogindex/observer::runQueuedIndexing
+            
+        
+    
+</pre>
+
+<p>When we run cron.php we want to force the catalogindex/observer::reindexAll method to run. 
+So, edit the schedule/cron_expr node from:
+
+<pre>
+                0 2 * * *
+</pre>
+
+<p> to </p>
+
+<pre>
+                * * * * *
+</pre>
+
+<p>
+Once that's done you'll need to reset the cache in Magento's 
+admin panel, so that the new config is reloaded. You'll also need to 
+'Queue Refresh' of the <em>Layered Navigation</em> 
+while you're in the Cache Management page. 
+This will insert a row in the core_flag table:
+</p>
+
+<pre>
+mysql&gt; select * from core_flag;
++---------+--------------+-------+-----------+---------------------+
+| flag_id | flag_code    | state | flag_data | last_update         |
++---------+--------------+-------+-----------+---------------------+
+|    1285 | catalogindex |     1 | N;        | 2010-02-18 14:58:17 |
++---------+--------------+-------+-----------+---------------------+
+1 row in set (0.00 sec)
+
+mysql&gt; 
+</pre>
+
+<p>
+Re-cached we're ready to re-index by running the cron.php directly:
+</p>
+
+<pre>
+# /usr/bin/php cron.php 
+</pre>
+
+<p>
+Once you're done - don't forget to revert your changes to 
+app/code/core/Mage/CatalogIndex/etc/config.xml 
+and to refresh your Magento cache :)
+</p><div class="blogger-post-footer"><img width='1' height='1' src='' alt='' /></div>

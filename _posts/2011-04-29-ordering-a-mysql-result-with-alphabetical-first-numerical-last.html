@@ -1,0 +1,51 @@
+--- 
+layout: post
+title: ORDERING a MYSQL result with alphabetical first, numerical last
+tags: 
+- mysql order number last alphanum
+status: publish
+type: post
+published: true
+meta: 
+  blogger_blog: enrutech.blogspot.com
+  blogger_author: n
+  blogger_2a695e53ec49ff1c5e3d2d650e76a7cd_permalink: "79404117922665423"
+  _edit_last: "14182377"
+---
+<p>Ordering a result by column in MySql does so alphanumerically. Items beginning with numerical characters will come first. Sometimes we want those entries starting with numbers to appear at the end.</p>
+
+<p>This is how I did just that:</p>
+
+<code>
+SELECT mycolumn
+FROM mytable
+ORDER BY CASE 
+ WHEN conv(mycolumn,10,10) = 0 THEN mycolumn 
+ ELSE concat('zzz',mycolumn) END
+</code>
+
+<p>When the column's data fails a conversion to Base 10 it returns a zero and so does NOT contain exclusive numerical characters. If the conversion succeeds we know it's numerical and so it be can prefixed with a "zzz" and so listed at the end of the alphabetical results.</p>
+
+<p>so</p>
+
+<code>
+2
+235
+34
+45.7
+566
+Alphaville
+Breathless
+</code>
+
+<p>becomes</p>
+
+<code>
+Alphaville
+Breathless
+2
+235
+34
+45.7
+566
+</code><div class="blogger-post-footer"><img width='1' height='1' src='' alt='' /></div>
