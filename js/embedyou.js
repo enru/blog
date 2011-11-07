@@ -1,5 +1,4 @@
 
-domReady(function() { EmbedYou.init(); })
 var EmbedYou = {
 	reObj: /http(s)?:\/\/www\.youtube\.com\/watch\?v=[a-z0-9]+/i
 	,initCSS: function(url) {
@@ -38,3 +37,5 @@ var EmbedYou = {
         head.appendChild(script)
 	}
 }
+EmbedYou.init();
+
