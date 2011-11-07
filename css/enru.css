@@ -1,3 +1,4 @@
 .content { padding: 5px; }
 .hero-unit { padding: 30px; }
+.hero-unit h2 { margin-bottom: 0; font-size: 60px; line-height: 1; letter-spacing: -1px }
 #archive abbr { margin-left: 5px; }
