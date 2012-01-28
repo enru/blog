@@ -1,4 +1,34 @@
-.content { padding: 5px; }
-.hero-unit { padding: 30px; }
+@font-face {
+    font-family: 'RopaSansRegular';
+    src: url('ropasans/RopaSans-Regular-webfont.eot');
+    src: url('ropasans/RopaSans-Regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('ropasans/RopaSans-Regular-webfont.woff') format('woff'),
+         url('ropasans/RopaSans-Regular-webfont.ttf') format('truetype'),
+         url('ropasans/RopaSans-Regular-webfont.svg#RopaSansRegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'RopaSansItalic';
+    src: url('ropasans/RopaSans-Italic-webfont.eot');
+    src: url('ropasans/RopaSans-Italic-webfont.eot?#iefix') format('embedded-opentype'),
+         url('ropasans/RopaSans-Italic-webfont.woff') format('woff'),
+         url('ropasans/RopaSans-Italic-webfont.ttf') format('truetype'),
+         url('ropasans/RopaSans-Italic-webfont.svg#RopaSansItalic') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+body { font-family: "RopaSansRegular", Arial, sans-serif; }
+
+.hero-unit { padding: 20px 0 0; background: none; border: none; margin: 0; }
 .hero-unit h2 { margin-bottom: 0; font-size: 60px; line-height: 1; letter-spacing: -1px }
+.hero-unit h2 a, 
+.hero-unit h2 a:hover { text-decoration: none; }
+#date { margin: 0 0 10px; }
 #archive abbr { margin-left: 5px; }
+p { font-size: 15px; }
+a, a:hover { color: #d60000 !important; }
