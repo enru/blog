@@ -33,4 +33,5 @@ body { font-family: "RopaSansRegular", Arial, sans-serif; }
 p { font-size: 15px; }
 a, a:hover { color: #d60000 !important; }
 ul { list-style: circle; }
+#footer ul.links { font-size: 30px; margin: 0;}
 #footer ul.links li { display: inline; }
