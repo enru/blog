@@ -1,0 +1,34 @@
+--- 
+layout: post
+title: Inserting a category attribute in Magento 
+tags:  
+- magento
+- mysql 
+- category 
+- attribute
+status: publish
+type: post
+published: true
+---
+<p>
+Another Magento snippet. How to insert a new category attribute directly into the Magento database.
+
+<pre>
+insert into eav_attribute (
+	attribute_id,
+	entity_type_id,
+	attribute_code,
+	backend_type,
+	frontend_input,
+	frontend_label
+) values (
+	null,
+	9,
+	"extra_description",
+	"text",
+	"textarea",
+	"Extra Description"
+);
+
+insert into eav_entity_attribute values (null, 9, 12, 7, 965, 28);
+</pre>
