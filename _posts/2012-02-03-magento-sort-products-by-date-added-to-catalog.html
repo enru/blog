@@ -1,0 +1,31 @@
+--- 
+layout: post
+title: 
+tags: magento sort products date catalog
+status: publish
+type: post
+published: true
+---
+<p>I was recently asked to order the products on a Magento site by the date they were added to the catalog/database.</p>
+<p>An easy task you might assume. The code to sort and order the products is straight forward. Finding the correct place to put the code proved more difficult for me. Several hours later and several differing approaches later, this is how I did it...</p>
+<p>I copied app/code/core/Mage/Catalog/Block/Product/List.php into app/code/local and added some code to the <code>_getProductCollection()</code> method to reorder the product collection by the (auto-incremented) entity_id of the products.</p>
+<h4>copy the code to app/code/local</h4>
+<pre>
+mkdir -p app/code/local/Mage/Catalog/Block/Product; 
+cp app/code/core/Mage/Catalog/Block/Product/List.php \
+app/code/local/Mage/Catalog/Block/Product/List.php;
+</pre>
+<h4>add the sorting code to the end of the _getProductCollection() method</h4>
+<pre>
++
++        // sort by created_at date or entity_id (3/2/12)
++        if(!isset($_GET['order'])) {
++            $this->_productCollection->getSelect()->reset( Zend_Db_Select::ORDER );
++            $this->_productCollection->getSelect()->order('e.entity_id desc');
++        }
++
++
+         return $this->_productCollection;
+     }
+</pre>
+<p>If you want to be more specific you can sort by `e.created_at`. It does the same thing.</p>
