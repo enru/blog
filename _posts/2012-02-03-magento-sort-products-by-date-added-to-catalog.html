@@ -9,7 +9,7 @@ published: true
 <p>I was recently asked to order the products on a Magento site by the date they were added to the catalog/database.</p>
 <p>An easy task you might assume. The code to sort and order the products is straight forward. Finding the correct place to put the code proved more difficult for me. Several hours later and several differing approaches later, this is how I did it...</p>
 <p>I copied app/code/core/Mage/Catalog/Block/Product/List.php into app/code/local and added some code to the <code>_getProductCollection()</code> method to reorder the product collection by the (auto-incremented) entity_id of the products.</p>
-<h4>copy the code to app/code/local</h4>
+<h4>copy the code to app/code/local like so</h4>
 <pre>
 mkdir -p app/code/local/Mage/Catalog/Block/Product; 
 cp app/code/core/Mage/Catalog/Block/Product/List.php \
