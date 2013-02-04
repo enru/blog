@@ -1,6 +1,6 @@
 ---
 layout: default
-published: false
+published: true
 author: neill russell
 ---
 
@@ -88,6 +88,3 @@ Very similar to the code above, here's how to:
             delete_option('my_nonwp_rewrite_flush_reqd');
         }
     });
-    
-    
-
