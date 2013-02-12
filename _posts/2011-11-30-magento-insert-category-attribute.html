@@ -14,21 +14,40 @@ published: true
 Another Magento snippet. How to insert a new category attribute directly into the Magento database.
 
 <pre>
-insert into eav_attribute (
+INSERT INTO eav_attribute (
 	attribute_id,
 	entity_type_id,
 	attribute_code,
 	backend_type,
 	frontend_input,
 	frontend_label
-) values (
+) VALUES (
 	null,
-	9,
+	(SELECT entity_type_id FROM eav_entity_type 
+	WHERE entity_type_code = 'catalog_category'),
 	"extra_description",
 	"text",
 	"textarea",
 	"Extra Description"
 );
 
-insert into eav_entity_attribute values (null, 9, 12, 7, 965, 28);
+INSERT INTO eav_entity_attribute VALUES (
+	null, 
+	(SELECT entity_type_id FROM eav_entity_type 
+	WHERE entity_type_code = 'catalog_category'),
+	(SELECT attribute_set_id FROM eav_attribute_set 
+		WHERE attribute_set_name = 'Default' 
+		AND entity_type_id = (
+    		SELECT entity_type_id FROM eav_entity_type 
+    		WHERE entity_type_code = 'catalog_category')
+	),
+	(SELECT attribute_group_id FROM eav_attribute_group 
+		WHERE attribute_set_id = (
+			SELECT entity_type_id FROM eav_entity_type 
+    		WHERE entity_type_code = 'catalog_category')
+	AND attribute_group_name = 'General Information'
+	), 
+	LAST_INSERT_ID(), 
+	2 /* sort order */
+);
 </pre>
