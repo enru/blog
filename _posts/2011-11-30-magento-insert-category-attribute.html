@@ -51,3 +51,13 @@ INSERT INTO eav_entity_attribute VALUES (
 	2 /* sort order */
 );
 </pre>
+
+<p>If you're using a Flat Catalogue then you'll need to refresh it in order to use the attribute in the frontend</p>
+
+<p>You should be able to access your new attribute like so:</p>
+
+<pre>
+
+    <?php echo $_category->getData('extra_description'); ?>
+        
+</pre>
